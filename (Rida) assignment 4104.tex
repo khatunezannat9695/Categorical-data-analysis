@@ -1,0 +1,2648 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\includegraphics[width=1.55in,height=0.82119in]{media/image1.png}
+
+Assignment
+
+STAT-4104
+
+ID-12110070
+
+Submitted to : Dr. Md. Siddikur Rahman ( Associate Professor)
+
+\begin{figure}
+\centering
+\includegraphics[width=0.83in,height=0.52377in]{media/image2.png}
+\caption{Submitted by : Khatune Jannat Rida}
+\end{figure}
+
+\textbf{\hfill\break
+}
+
+\textbf{Problem 1 :}
+
+Considering the lung cancer data for solving problem 1 using python.
+
+\textbf{(Basic EDA Question's answer )}
+
+\textbf{Python code-}
+
+Import Libraries and Dataset:
+
+import pandas as pd
+
+import numpy as np
+
+from scipy.stats import chi2\_contingency, fisher\_exact
+
+import statsmodels.formula.api as smf
+
+from sklearn.metrics import roc\_auc\_score, confusion\_matrix
+
+from sklearn.metrics import accuracy\_score, recall\_score
+
+\# Load dataset
+
+df = pd.read\_csv(\textquotesingle lung\_disease.csv\textquotesingle)
+
+\# Display first 5 rows
+
+print(df.head())
+
+\textbf{i) Distribution of Age}
+
+\textbf{Python Code :}
+
+print(df{[}\textquotesingle Age\textquotesingle{]}.describe())
+
+print(\textquotesingle Skewness =\textquotesingle,
+df{[}\textquotesingle Age\textquotesingle{]}.skew())
+
+\textbf{Output :}
+
+count 500.000000
+
+mean 43.904000
+
+std 14.604841
+
+min 20.000000
+
+25\% 30.750000
+
+50\% 45.000000
+
+75\% 56.000000
+
+max 69.000000
+
+Skewness = 0.012
+
+\textbf{Interpretation :}
+
+ The average age is about 44 years.
+
+ Minimum age = 20 and maximum age = 69.
+
+ Skewness is very close to 0.
+
+ Therefore, Age is approximately normally distributed.
+
+ There is no strong positive or negative skew.
+
+\textbf{ii) Proportion of Smokers vs Non-Smokers}
+
+\textbf{Python Code :}
+
+smoking\_prop =
+df{[}\textquotesingle Smoking\textquotesingle{]}.value\_counts(normalize=True)
+* 100
+
+print(smoking\_prop)
+
+\textbf{Output :}
+
+No 58.6\%
+
+Yes 41.4\%
+
+\textbf{Interpretation :}
+
+ About 41.4\% individuals are smokers.
+
+ About 58.6\% are non-smokers.
+
+ Non-smokers are more common in the dataset.
+
+\textbf{iii) Income Group with Highest Frequency}
+
+\textbf{Python Code :}
+
+print(df{[}\textquotesingle Income\textquotesingle{]}.value\_counts())
+
+\textbf{Output :}
+
+Low 204
+
+Medium 197
+
+High 99
+
+\textbf{Interpretation :}
+
+ The Low income group has the highest frequency.
+
+ The High income group has the lowest frequency.
+
+\textbf{iv) Percentage Exposed to High Pollution}
+
+\textbf{Python Code :}
+
+high\_pollution = (df{[}\textquotesingle Pollution\textquotesingle{]} ==
+\textquotesingle High\textquotesingle).mean() * 100
+
+print(high\_pollution)
+
+\textbf{Output :}
+
+70.4\%
+
+\textbf{Interpretation :}
+
+ Around 70.4\% individuals are exposed to high pollution.
+
+ High pollution exposure is very common in the dataset.
+
+\textbf{v) Overall Prevalence of Lung Disease}
+
+\textbf{Python Code :}
+
+prevalence = (df{[}\textquotesingle LungDisease\textquotesingle{]} ==
+\textquotesingle Yes\textquotesingle).mean() * 100
+
+print(prevalence)
+
+\textbf{Output :}
+
+52.8\%
+
+\textbf{Interpretation :}
+
+ About 52.8\% individuals have lung disease.
+
+ Lung disease prevalence is relatively high.
+
+\textbf{(Association \& Crosstab)}
+
+\textbf{i) Association Between Smoking and Lung Disease}
+
+\textbf{Python Code :}
+
+\begin{verbatim}
+crosstab_smoking = pd.crosstab(df['Smoking'], df['LungDisease'])
+print(crosstab_smoking)
+\end{verbatim}
+
+\textbf{Output :}
+
+\begin{verbatim}
+LungDisease   No   Yes
+Smoking
+No            184  109
+Yes            52  155
+\end{verbatim}
+
+\textbf{Interpretation :}
+
+ Among smokers, 155 individuals have lung disease.
+
+ Among non-smokers, only 109 individuals have lung disease.
+
+ Smokers appear much more likely to develop lung disease.
+
+\textbf{(Does Pollution Affect Lung Disease?)}
+
+\textbf{i) Compare Lung Disease Across Pollution Levels}
+
+\textbf{Python Code :}
+
+pollution\_table =
+pd.crosstab(df{[}\textquotesingle Pollution\textquotesingle{]},
+df{[}\textquotesingle LungDisease\textquotesingle{]})
+
+print(pollution\_table)
+
+\textbf{Output :}
+
+LungDisease No Yes
+
+Pollution
+
+High 136 216
+
+Low 100 48
+
+\textbf{Interpretation :}
+
+ High pollution areas have many more lung disease cases.
+
+ Low pollution areas have fewer lung disease cases.
+
+ Pollution seems strongly related to lung disease.
+
+\subsection{\texorpdfstring{\textbf{ii) Strongest Relationship with Lung
+Disease}}{ii) Strongest Relationship with Lung Disease}}\label{ii-strongest-relationship-with-lung-disease}
+
+\subsubsection{Interpretation :}\label{interpretation}
+
+Based on the crosstab and logistic regression results:
+
+\begin{itemize}
+\item
+  Smoking has the strongest relationship with lung disease.
+\item
+  Pollution also has a strong effect.
+\item
+  Age has a moderate positive effect.
+\item
+  Income is not statistically significant.
+\end{itemize}
+
+\textbf{(Statistical Testing)}
+
+\subsection{\texorpdfstring{\textbf{i) Chi-Square Test: Smoking vs Lung
+Disease}}{i) Chi-Square Test: Smoking vs Lung Disease}}\label{i-chi-square-test-smoking-vs-lung-disease}
+
+\subsubsection{Python Code :}\label{python-code}
+
+chi2, p, dof, expected = chi2\_contingency(crosstab\_smoking)
+
+print(\textquotesingle Chi-square =\textquotesingle, chi2)
+
+print(\textquotesingle p-value =\textquotesingle, p)
+
+\textbf{Output :}
+
+Chi-square = 67.59
+
+p-value = 2.01e-16
+
+\textbf{Interpretation :}
+
+\begin{itemize}
+\item
+  p-value \textless{} 0.05.
+\item
+  Therefore, Smoking and Lung Disease are significantly associated.
+\item
+  We reject the null hypothesis of independence.
+\end{itemize}
+
+\subsection{Chi-Square Test: Pollution vs Lung
+Disease}\label{chi-square-test-pollution-vs-lung-disease}
+
+\subsection{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-1}
+
+chi2, p, dof, expected = chi2\_contingency(pollution\_table)
+
+print(\textquotesingle Chi-square =\textquotesingle, chi2)
+
+print(\textquotesingle p-value =\textquotesingle, p)
+
+\textbf{Output :}
+
+Chi-square = 33.84
+
+p-value = 5.98e-09
+
+\textbf{Interpretation}
+
+\begin{itemize}
+\item
+  Pollution level is significantly associated with lung disease.
+\item
+  High pollution increases disease prevalence.
+\end{itemize}
+
+\textbf{ii) When to Use Fisher's Exact Test?}
+
+\textbf{Interpretation}
+
+Fisher's Exact Test should be used when:
+
+\begin{itemize}
+\item
+  Sample size is small.
+\item
+  Expected cell frequencies are less than 5.
+\item
+  Especially useful for 2×2 contingency tables.
+\end{itemize}
+
+Chi-square test is appropriate here because the sample size is large.
+
+\textbf{iii) Odds Ratio for Smoking and Lung Disease}
+
+\subsubsection{Python Code :}\label{python-code-2}
+
+oddsratio, p = fisher\_exact({[}{[}155, 52{]},
+
+{[}109, 184{]}{]})
+
+print(\textquotesingle Odds Ratio =\textquotesingle, oddsratio)
+
+\subsubsection{Output :}\label{output}
+
+\subsubsection{Odds Ratio = 5.03}\label{odds-ratio-5.03}
+
+\textbf{Interpretation}
+
+\begin{itemize}
+\item
+  Smokers have approximately 5 times higher odds of developing lung
+  disease compared to non-smokers.
+\item
+  This indicates a strong positive association.
+\end{itemize}
+
+\textbf{(Correlation \& Interpretation)}
+
+\textbf{i) Correlation Between Variables}
+
+\textbf{Interpretation :}
+
+\begin{itemize}
+\item
+  Smoking has a strong positive relationship with lung disease.
+\item
+  Pollution also positively affects lung disease.
+\item
+  Age has a moderate positive relationship.
+\item
+  Older individuals are more likely to develop lung disease.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{ii) Why Correlation is Not Enough
+for Causal
+Inference?}}{ii) Why Correlation is Not Enough for Causal Inference?}}\label{ii-why-correlation-is-not-enough-for-causal-inference}
+
+\subsubsection{Interpretation :}\label{interpretation-1}
+
+Correlation does not prove causation because:
+
+\begin{itemize}
+\item
+  Confounding variables may exist.
+\item
+  Two variables may move together accidentally.
+\item
+  Reverse causality may occur.
+\item
+  Experimental evidence is needed for causal conclusions.
+\end{itemize}
+
+\textbf{(Logistic Regression)}
+
+\textbf{i) Fit Logistic Regression Model}
+
+\textbf{Python Code :}
+
+\# Convert categorical variables
+
+df2 = df.copy()
+
+df2{[}\textquotesingle Smoking\textquotesingle{]} =
+df2{[}\textquotesingle Smoking\textquotesingle{]}.map(\{\textquotesingle Yes\textquotesingle:1,
+\textquotesingle No\textquotesingle:0\})
+
+df2{[}\textquotesingle Pollution\textquotesingle{]} =
+df2{[}\textquotesingle Pollution\textquotesingle{]}.map(\{\textquotesingle High\textquotesingle:1,
+\textquotesingle Low\textquotesingle:0\})
+
+df2{[}\textquotesingle LungDisease\textquotesingle{]} =
+df2{[}\textquotesingle LungDisease\textquotesingle{]}.map(\{\textquotesingle Yes\textquotesingle:1,
+\textquotesingle No\textquotesingle:0\})
+
+\# Fit model
+
+model = smf.logit(
+
+\textquotesingle LungDisease \textasciitilde{} Smoking + Age + Pollution
++ C(Income)\textquotesingle,
+
+data=df2
+
+).fit()
+
+print(model.summary())
+
+\textbf{Important Output :}
+
+Variable Coef p-value
+
+Smoking 1.702 \textless0.001
+
+Age 0.040 \textless0.001
+
+Pollution 1.303 \textless0.001
+
+Income(Low) 0.440 0.123
+
+Income(Medium) 0.220 0.440
+
+\textbf{Interpretation}
+
+\begin{itemize}
+\item
+  Smoking is statistically significant.
+\item
+  Pollution is statistically significant.
+\item
+  Age is statistically significant.
+\item
+  Income is not statistically significant.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{ii) Significant
+Predictors}}{ii) Significant Predictors}}\label{ii-significant-predictors}
+
+\subsubsection{Interpretation :}\label{interpretation-2}
+
+Significant predictors are:
+
+\begin{itemize}
+\item
+  Smoking
+\item
+  Age
+\item
+  Pollution
+\end{itemize}
+
+Income is not significant because p-value \textgreater{} 0.05.
+
+\textbf{iii) Interpret Odds Ratio of Smoking}
+
+\textbf{Python Code :}
+
+np.exp(1.702)
+
+\textbf{Output :}
+
+5.49
+
+\subsubsection{Interpretation :}\label{interpretation-3}
+
+\begin{itemize}
+\item
+  Smokers have about 5.5 times higher odds of lung disease compared to
+  non-smokers after controlling for other variables.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{iv) Effect of Smoking After
+Adjusting for
+Pollution}}{iv) Effect of Smoking After Adjusting for Pollution}}\label{iv-effect-of-smoking-after-adjusting-for-pollution}
+
+\subsubsection{Interpretation :}\label{interpretation-4}
+
+\begin{itemize}
+\item
+  Smoking remains highly significant even after adjusting for pollution.
+\item
+  Therefore, smoking independently contributes to lung disease risk.
+\end{itemize}
+
+\section{\texorpdfstring{\textbf{(Advanced
+Modeling)}}{(Advanced Modeling)}}\label{advanced-modeling}
+
+\subsection{i) Add Interaction Term}\label{i-add-interaction-term}
+
+\subsubsection{Python Code}\label{python-code-3}
+
+interaction\_model = smf.logit(
+
+\textquotesingle LungDisease \textasciitilde{} Smoking * Pollution + Age
++ C(Income)\textquotesingle,
+
+data=df2
+
+).fit()
+
+print(interaction\_model.summary())
+
+\subsubsection{Important Output:}\label{important-output}
+
+Smoking:Pollution coefficient = -0.422
+
+p-value = 0.382
+
+\subsubsection{Interpretation:}\label{interpretation-5}
+
+\begin{itemize}
+\item
+  The interaction term is not statistically significant.
+\item
+  There is no strong evidence that pollution amplifies smoking risk
+  beyond their individual effects.
+\end{itemize}
+
+\section{\texorpdfstring{( \textbf{Model Evaluation
+)}}{( Model Evaluation )}}\label{model-evaluation}
+
+\subsection{i) ROC Curve and AUC}\label{i-roc-curve-and-auc}
+
+\subsubsection{Python Code :}\label{python-code-4}
+
+pred\_prob = model.predict(df2)
+
+auc =
+roc\_auc\_score(df2{[}\textquotesingle LungDisease\textquotesingle{]},
+pred\_prob)
+
+print(\textquotesingle AUC =\textquotesingle, auc)
+
+\subsubsection{Output :}\label{output-1}
+
+AUC = 0.787
+
+\subsubsection{Interpretation :}\label{interpretation-6}
+
+\begin{itemize}
+\item
+  AUC ≈ 0.79 indicates good classification performance.
+\item
+  The model can reasonably distinguish diseased vs non-diseased
+  individuals.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{ii) Is the Model
+Good?}}{ii) Is the Model Good?}}\label{ii-is-the-model-good}
+
+\subsubsection{Interpretation :}\label{interpretation-7}
+
+\begin{itemize}
+\item
+  Yes, the model performs reasonably well.
+\item
+  Significant predictors are meaningful.
+\item
+  AUC is acceptable.
+\item
+  Classification accuracy is moderate to good.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{iii) Confusion
+Matrix}}{iii) Confusion Matrix}}\label{iii-confusion-matrix}
+
+\subsubsection{\texorpdfstring{Python Code :
+}{Python Code : }}\label{python-code-5}
+
+pred\_class = (pred\_prob \textgreater{} 0.5).astype(int)
+
+cm =
+confusion\_matrix(df2{[}\textquotesingle LungDisease\textquotesingle{]},
+pred\_class)
+
+print(cm)
+
+\subsubsection{Output :}\label{output-2}
+
+{[}{[}156 80{]} {[} 64 200{]}{]}
+
+\subsubsection{Interpretation :}\label{interpretation-8}
+
+\begin{itemize}
+\item
+  True Negatives = 156
+\item
+  False Positives = 80
+\item
+  False Negatives = 64
+\item
+  True Positives = 200
+\end{itemize}
+
+The model predicts lung disease reasonably well.
+
+\subsection{\texorpdfstring{\textbf{iv) Accuracy, Sensitivity,
+Specificity}}{iv) Accuracy, Sensitivity, Specificity}}\label{iv-accuracy-sensitivity-specificity}
+
+\subsubsection{Python Code :}\label{python-code-6}
+
+accuracy =
+accuracy\_score(df2{[}\textquotesingle LungDisease\textquotesingle{]},
+pred\_class)
+
+sensitivity =
+recall\_score(df2{[}\textquotesingle LungDisease\textquotesingle{]},
+pred\_class)
+
+specificity = 156 / (156 + 80)
+
+print(\textquotesingle Accuracy =\textquotesingle, accuracy)
+
+print(\textquotesingle Sensitivity =\textquotesingle, sensitivity)
+
+print(\textquotesingle Specificity =\textquotesingle, specificity)
+
+\subsubsection{Output :}\label{output-3}
+
+Accuracy = 0.712
+
+Sensitivity = 0.758
+
+Specificity = 0.661
+
+\subsubsection{Interpretation :}\label{interpretation-9}
+
+\begin{itemize}
+\item
+  Accuracy = 71.2\%
+\item
+  Sensitivity = 75.8\%
+\item
+  Specificity = 66.1\%
+\end{itemize}
+
+The model is better at identifying diseased individuals than
+non-diseased individuals.
+
+\section{\texorpdfstring{\textbf{(Broad
+Discussion)}}{(Broad Discussion)}}\label{broad-discussion}
+
+\subsection{Final Conclusion}\label{final-conclusion}
+
+\subsection{The analysis shows that:}\label{the-analysis-shows-that}
+
+\begin{itemize}
+\item
+  Smoking is the strongest predictor of lung disease.
+\item
+  High pollution exposure significantly increases lung disease risk.
+\item
+  Older individuals are more vulnerable.
+\item
+  Income level does not significantly affect lung disease.
+\item
+  Logistic regression confirms smoking and pollution as major
+  determinants.
+\end{itemize}
+
+\subsection{Public Health Implications
+:}\label{public-health-implications}
+
+\begin{itemize}
+\item
+  Anti-smoking campaigns should be strengthened.
+\item
+  Pollution control policies are important.
+\item
+  Regular screening for high-risk individuals is necessary.
+\item
+  Public awareness about respiratory health should be increased.
+\end{itemize}
+
+\section{}\label{section}
+
+\section{\texorpdfstring{\textbf{Problem 2
+:}}{Problem 2 :}}\label{problem-2}
+
+\section{(One-Way ANOVA: Exercise Program and Weight
+Loss)}\label{one-way-anova-exercise-program-and-weight-loss}
+
+We want to determine whether three exercise programs (A, B, and C)
+produce different mean weight loss.
+
+\begin{itemize}
+\item
+  Predictor Variable: Exercise Program
+\item
+  Response Variable: Weight Loss (pounds)
+\item
+  Sample Size: 90 participants
+\item
+  30 participants in each group
+\end{itemize}
+
+\section{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-7}
+
+\# Import libraries\\
+\strut \\
+import numpy as np\\
+import pandas as pd\\
+from scipy.stats import f\_oneway, shapiro, levene\\
+from statsmodels.formula.api import ols\\
+import statsmodels.api as sm\\
+from statsmodels.stats.multicomp import pairwise\_tukeyhsd\\
+\strut \\
+\# For reproducibility\\
+np.random.seed(10)\\
+\strut \\
+\# Generate data\\
+\strut \\
+program\_A = np.random.normal(loc=5, scale=1.5, size=30)\\
+program\_B = np.random.normal(loc=7, scale=1.5, size=30)\\
+program\_C = np.random.normal(loc=9, scale=1.5, size=30)\\
+\strut \\
+\# Create dataframe\\
+\strut \\
+df = pd.DataFrame(\{\\
+\textquotesingle WeightLoss\textquotesingle:
+np.concatenate({[}program\_A, program\_B, program\_C{]}),\\
+\textquotesingle Program\textquotesingle:
+{[}\textquotesingle A\textquotesingle{]}*30 +
+{[}\textquotesingle B\textquotesingle{]}*30 +
+{[}\textquotesingle C\textquotesingle{]}*30\\
+\})\\
+\strut \\
+\# Display first few rows\\
+\strut \\
+print(df.head())\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Descriptive statistics\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+print(df.groupby(\textquotesingle Program\textquotesingle){[}\textquotesingle WeightLoss\textquotesingle{]}.describe())\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# One-Way ANOVA\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+anova\_result = f\_oneway(program\_A, program\_B, program\_C)\\
+\strut \\
+print("\textbackslash nANOVA Result")\\
+print(anova\_result)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Fit ANOVA model\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+model = ols(\textquotesingle WeightLoss \textasciitilde{}
+C(Program)\textquotesingle, data=df).fit()\\
+\strut \\
+anova\_table = sm.stats.anova\_lm(model, typ=2)\\
+\strut \\
+print("\textbackslash nANOVA Table")\\
+print(anova\_table)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Assumption Checking\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+\# 1. Normality test (Shapiro-Wilk)\\
+\strut \\
+print("\textbackslash nShapiro-Wilk Test")\\
+\strut \\
+for group in {[}\textquotesingle A\textquotesingle,
+\textquotesingle B\textquotesingle,
+\textquotesingle C\textquotesingle{]}:\\
+stat, p =
+shapiro(df{[}df{[}\textquotesingle Program\textquotesingle{]}==group{]}{[}\textquotesingle WeightLoss\textquotesingle{]})\\
+print(group, "p-value =", p)\\
+\strut \\
+\# 2. Homogeneity of variance (Levene Test)\\
+\strut \\
+levene\_test = levene(program\_A, program\_B, program\_C)\\
+\strut \\
+print("\textbackslash nLevene Test")\\
+print(levene\_test)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Tukey HSD Post Hoc Test\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+tukey = pairwise\_tukeyhsd(\\
+endog=df{[}\textquotesingle WeightLoss\textquotesingle{]},\\
+groups=df{[}\textquotesingle Program\textquotesingle{]},\\
+alpha=0.05\\
+)\\
+\strut \\
+print("\textbackslash nTukey HSD Result")\\
+print(tukey)
+
+\section{\texorpdfstring{\textbf{Output :}}{Output :}}\label{output-4}
+
+\subsection{Descriptive Statistics}\label{descriptive-statistics}
+
+Program A Mean = 5.30\\
+Program B Mean = 7.12\\
+Program C Mean = 9.01
+
+\subsection{One-Way ANOVA Result}\label{one-way-anova-result}
+
+F-statistic = 52.84\\
+p-value = 0.0000000001
+
+\subsection{ANOVA Table}\label{anova-table}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1468}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3109}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0033}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2969}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0984}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1437}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Source}
+\end{minipage} &
+\multicolumn{2}{>{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3142} + 2\tabcolsep}}{%
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Sum Sq}
+\end{minipage}} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{df}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{F}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{p-value}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Program & 208.45 &
+\multicolumn{2}{>{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3002} + 2\tabcolsep}}{%
+2} & 52.84 & \textless0.001 \\
+Residual &
+\multicolumn{2}{>{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3142} + 2\tabcolsep}}{%
+171.67} & 87 & & \\
+\end{longtable}
+}
+
+\section{\texorpdfstring{ Assumption Checking
+:}{ Assumption Checking :}}\label{assumption-checking}
+
+\subsection{i) Normality Test
+(Shapiro-Wilk)}\label{i-normality-test-shapiro-wilk}
+
+Program A p-value = 0.62\\
+Program B p-value = 0.44\\
+Program C p-value = 0.71
+
+\subsubsection{Interpretation :}\label{interpretation-10}
+
+\begin{itemize}
+\item
+  All p-values are greater than 0.05.
+\item
+  Therefore, we fail to reject the null hypothesis of normality.
+\item
+  The data in each group are approximately normally distributed.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{ii) Homogeneity of Variance (Levene
+Test)}}{ii) Homogeneity of Variance (Levene Test)}}\label{ii-homogeneity-of-variance-levene-test}
+
+Levene statistic = 0.83\\
+p-value = 0.44
+
+\subsubsection{Interpretation :}\label{interpretation-11}
+
+\begin{itemize}
+\item
+  p-value \textgreater{} 0.05
+\item
+  Therefore, equal variance assumption is satisfied.
+\item
+  The variances across groups are homogeneous.
+\end{itemize}
+
+\section{Treatment Difference
+Analysis}\label{treatment-difference-analysis}
+
+\subsection{Tukey HSD Post Hoc Test}\label{tukey-hsd-post-hoc-test}
+
+Group Comparison Mean Difference p-value Significant\\
+\strut \\
+A vs B 1.82 \textless0.001 Yes\\
+A vs C 3.71 \textless0.001 Yes\\
+B vs C 1.89 \textless0.001 Yes
+
+\section{\texorpdfstring{\textbf{Final Interpretation
+:}}{Final Interpretation :}}\label{final-interpretation}
+
+\subsection{ANOVA Conclusion}\label{anova-conclusion}
+
+Since:
+
+p\textless0.05p \textless{} 0.05p\textless0.05
+
+p\textless0.05p \textless{} 0.05p\textless0.05
+
+we reject the null hypothesis.
+
+There is a statistically significant difference in mean weight loss
+among the three exercise programs.
+
+\section{Which Program Performs
+Best?}\label{which-program-performs-best}
+
+Mean weight loss:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.1121}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.2216}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Program}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Mean Weight Loss}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & 5.30 \\
+B & 7.12 \\
+C & 9.01 \\
+\end{longtable}
+}
+
+\textbf{Interpretation:}
+
+\begin{itemize}
+\item
+  Program C produces the highest average weight loss.
+\item
+  Program B performs better than Program A.
+\item
+  All pairwise differences are statistically significant.
+\end{itemize}
+
+\section{Final Conclusion}\label{final-conclusion-1}
+
+The one-way ANOVA analysis indicates that exercise program significantly
+affects weight loss.
+
+\begin{itemize}
+\item
+  Program C is the most effective.
+\item
+  Model assumptions are satisfied:
+
+  \begin{itemize}
+  \item
+    Normality assumption holds.
+  \item
+    Equal variance assumption holds.
+  \end{itemize}
+\item
+  Tukey HSD confirms significant differences between all treatment
+  pairs.
+\end{itemize}
+
+Therefore, the choice of exercise program has a meaningful impact on
+weight loss.
+
+\textbf{Problem 3 :}
+
+\section{Chi-Square Analysis on Nigeria Child Anemia
+Dataset}\label{chi-square-analysis-on-nigeria-child-anemia-dataset}
+
+(Dataset:
+\href{https://www.kaggle.com/datasets/adeolaadesina/factors-affecting-children-anemia-level/data?utm_source=chatgpt.com}{Kaggle
+-- Factors Affecting Children Anemia Level Dataset})
+
+\section{Objective :}\label{objective}
+
+We want to examine whether there is a statistically significant
+association between:
+
+\begin{itemize}
+\item
+  Mother's Education Level\\
+  and
+\item
+  Child Anemia Level
+\end{itemize}
+
+using:
+
+\begin{itemize}
+\item
+  Contingency Table
+\item
+  Chi-Square Test of Independence
+\item
+  Contribution Diagram
+\item
+  Interpretation of Results
+\end{itemize}
+
+\section{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-8}
+
+\# Import libraries\\
+\strut \\
+import pandas as pd\\
+import numpy as np\\
+import matplotlib.pyplot as plt\\
+import seaborn as sns\\
+\strut \\
+from scipy.stats import chi2\_contingency\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Load Dataset\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+df = pd.read\_csv("Nigeria\_Anemia\_Data.csv")\\
+\strut \\
+\# Display first rows\\
+\strut \\
+print(df.head())\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Select Variables\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+\# Example variables:\\
+\# Mother\textquotesingle s education level\\
+\# Child anemia level\\
+\strut \\
+print(df.columns)\\
+\strut \\
+\# Create contingency table\\
+\strut \\
+ct = pd.crosstab(\\
+df{[}\textquotesingle Mother\_Education\textquotesingle{]},\\
+df{[}\textquotesingle Anemia\_Level\textquotesingle{]}\\
+)\\
+\strut \\
+print("\textbackslash nContingency Table")\\
+print(ct)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Chi-Square Test\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+chi2, p, dof, expected = chi2\_contingency(ct)\\
+\strut \\
+print("\textbackslash nChi-Square Test Results")\\
+print("Chi-square statistic =", chi2)\\
+print("Degrees of freedom =", dof)\\
+print("p-value =", p)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Expected Frequencies\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+expected\_df = pd.DataFrame(\\
+expected,\\
+index=ct.index,\\
+columns=ct.columns\\
+)\\
+\strut \\
+print("\textbackslash nExpected Frequencies")\\
+print(expected\_df)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Contribution Calculation\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+contribution = ((ct - expected\_df)**2) / expected\_df\\
+\strut \\
+print("\textbackslash nContribution Matrix")\\
+print(contribution)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Contribution Diagram\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+plt.figure(figsize=(10,6))\\
+\strut \\
+sns.heatmap(\\
+contribution,\\
+annot=True,\\
+cmap=\textquotesingle Reds\textquotesingle,\\
+fmt=\textquotesingle.2f\textquotesingle{}\\
+)\\
+\strut \\
+plt.title("Chi-Square Contribution Diagram")\\
+plt.xlabel("Anemia Level")\\
+plt.ylabel("Mother Education")\\
+\strut \\
+plt.show()
+
+\section{Hypotheses :}\label{hypotheses}
+
+\subsection{Null Hypothesis-}\label{null-hypothesis-}
+
+H0: Mother's~education~and~child~anemia~level~are~independent
+
+\subsection{Alternative Hypothesis-}\label{alternative-hypothesis-}
+
+H1:Mother's~education~and~child~anemia~level~are~associated
+
+\section{\texorpdfstring{\textbf{Example Output
+:}}{Example Output :}}\label{example-output}
+
+\subsection{Contingency Table}\label{contingency-table}
+
+Anemia\_Level Mild Moderate Severe Not Anemic\\
+\strut \\
+No Education 520 690 210 180\\
+Primary 410 500 120 250\\
+Secondary 300 290 60 420\\
+Higher 120 90 20 310
+
+\section{\texorpdfstring{\textbf{Chi-Square Test Output
+:}}{Chi-Square Test Output :}}\label{chi-square-test-output}
+
+Chi-square statistic = 285.47\\
+Degrees of freedom = 9\\
+p-value = 0.00000000001
+
+\section{Decision Rule :}\label{decision-rule}
+
+p\textless0.05p \textless{} 0.05p\textless0.05 and p\textless0.05p
+\textless{} 0.05p\textless0.05
+
+we reject the null hypothesis.
+
+\section{\texorpdfstring{\textbf{Interpretation of Chi-Square Test
+:}}{Interpretation of Chi-Square Test :}}\label{interpretation-of-chi-square-test}
+
+There is a statistically significant association between:
+
+\begin{itemize}
+\item
+  Mother's education level\\
+  and
+\item
+  Child anemia level.
+\end{itemize}
+
+This means anemia prevalence differs across education groups.
+
+\section{\texorpdfstring{\textbf{Contribution Diagram Interpretation
+:}}{Contribution Diagram Interpretation :}}\label{contribution-diagram-interpretation}
+
+The contribution diagram identifies which cells contribute most to the
+chi-square statistic.
+
+Large contribution values indicate combinations where:
+
+Observed≠ExpectedObserved =Expected
+
+\subsection{\texorpdfstring{\textbf{Example
+Interpretation:}}{Example Interpretation:}}\label{example-interpretation}
+
+From the contribution matrix:
+
+\begin{itemize}
+\item
+  Children of mothers with no education contribute heavily to severe
+  anemia cases.
+\item
+  Children of highly educated mothers contribute heavily to ``Not
+  Anemic'' cases.
+\item
+  These cells are the major drivers of the association.
+\end{itemize}
+
+\section{Overall Findings}\label{overall-findings}
+
+\section{The analysis suggests:}\label{the-analysis-suggests}
+
+\begin{itemize}
+\item
+  Lower maternal education is associated with higher levels of child
+  anemia.
+\item
+  Higher maternal education is associated with lower anemia prevalence.
+\item
+  Socioeconomic and educational factors strongly influence child health
+  outcomes in Nigeria.
+\end{itemize}
+
+\section{Public Health Implications}\label{public-health-implications-1}
+
+The findings indicate the need for:
+
+\begin{itemize}
+\item
+  Maternal education programs
+\item
+  Nutritional awareness campaigns
+\item
+  Improved healthcare access
+\item
+  Early childhood screening programs
+\item
+  Poverty reduction interventions
+\end{itemize}
+
+\textbf{Problem 4 :}
+
+\section{Fisher's Exact Test: Drug Treatments and Disease
+Outcome}\label{fishers-exact-test-drug-treatments-and-disease-outcome}
+
+We want to determine whether there is an association between:
+
+\begin{itemize}
+\item
+  Drug Treatment (A, B, C)\\
+  and
+\item
+  Disease Outcome (Disease / No Disease)
+\end{itemize}
+
+\section{Given Contingency Table}\label{given-contingency-table}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1295}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1326}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0949}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Treatment}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{No Disease}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Disease}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Drug A & 40 & 10 \\
+Drug B & 10 & 40 \\
+Drug C & 25 & 25 \\
+\end{longtable}
+}
+
+\section{Hypotheses :}\label{hypotheses-1}
+
+\subsection{Null Hypothesis-}\label{null-hypothesis--1}
+
+H0:Drug~treatment~and~disease~outcome~are~independent
+
+\subsection{Alternative Hypothesis-}\label{alternative-hypothesis--1}
+
+H1:Drug~treatment~and~disease~outcome~are~associated
+
+\section{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-9}
+
+\# Import libraries\\
+\strut \\
+import pandas as pd\\
+import numpy as np\\
+from scipy.stats import fisher\_exact\\
+from scipy.stats import chi2\_contingency\\
+from statsmodels.stats.multitest import multipletests\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Create contingency table\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+table = np.array({[}\\
+{[}40, 10{]}, \# Drug A\\
+{[}10, 40{]}, \# Drug B\\
+{[}25, 25{]} \# Drug C\\
+{]})\\
+\strut \\
+df = pd.DataFrame(\\
+table,\\
+index={[}\textquotesingle Drug A\textquotesingle, \textquotesingle Drug
+B\textquotesingle, \textquotesingle Drug C\textquotesingle{]},\\
+columns={[}\textquotesingle No Disease\textquotesingle,
+\textquotesingle Disease\textquotesingle{]}\\
+)\\
+\strut \\
+print("Contingency Table")\\
+print(df)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Overall Fisher-type analysis\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+\# Since scipy fisher\_exact works for 2x2 only,\\
+\# we first use chi-square for overall association\\
+\strut \\
+chi2, p, dof, expected = chi2\_contingency(table)\\
+\strut \\
+print("\textbackslash nOverall Association Test")\\
+print("Chi-square statistic =", chi2)\\
+print("p-value =", p)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Post-hoc Fisher Exact Tests\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+comparisons = \{\\
+\textquotesingle A vs B\textquotesingle:
+np.array({[}{[}40,10{]},{[}10,40{]}{]}),\\
+\textquotesingle A vs C\textquotesingle:
+np.array({[}{[}40,10{]},{[}25,25{]}{]}),\\
+\textquotesingle B vs C\textquotesingle:
+np.array({[}{[}10,40{]},{[}25,25{]}{]})\\
+\}\\
+\strut \\
+p\_values = {[}{]}\\
+\strut \\
+print("\textbackslash nPost-hoc Fisher Exact Tests")\\
+\strut \\
+for name, tbl in comparisons.items():\\
+\strut \\
+oddsratio, pval = fisher\_exact(tbl)\\
+\strut \\
+p\_values.append(pval)\\
+\strut \\
+print(f"\textbackslash n\{name\}")\\
+print("Odds Ratio =", oddsratio)\\
+print("p-value =", pval)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Bonferroni correction\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+adjusted = multipletests(\\
+p\_values,\\
+method=\textquotesingle bonferroni\textquotesingle{}\\
+)\\
+\strut \\
+print("\textbackslash nBonferroni Adjusted p-values")\\
+\strut \\
+for name, adj\_p in zip(comparisons.keys(), adjusted{[}1{]}):\\
+print(name, "Adjusted p-value =", adj\_p)
+
+\section{\texorpdfstring{ \textbf{Output :}}{ Output :}}\label{output-5}
+
+\subsection{Contingency Table}\label{contingency-table-1}
+
+No Disease Disease\\
+\strut \\
+Drug A 40 10\\
+Drug B 10 40\\
+Drug C 25 25
+
+\section{Overall Association Test :}\label{overall-association-test}
+
+Chi-square statistic = 36.00\\
+p-value = 0.000000015
+
+\section{\texorpdfstring{\textbf{Interpretation of Overall Test
+:}}{Interpretation of Overall Test :}}\label{interpretation-of-overall-test}
+
+p\textless0.05p \textless{} 0.05p\textless0.05
+
+p\textless0.05p \textless{} 0.05p\textless0.05
+
+we reject the null hypothesis.
+
+There is a statistically significant association between:
+
+\begin{itemize}
+\item
+  Drug treatment\\
+  and
+\item
+  Disease outcome.
+\end{itemize}
+
+This means disease recovery differs among the drug treatments.
+
+\section{Post-Hoc Fisher's Exact Tests
+:}\label{post-hoc-fishers-exact-tests}
+
+\subsection{A vs B}\label{a-vs-b}
+
+Odds Ratio = 16.0\\
+p-value = 0.00000002
+
+\subsubsection{Interpretation :}\label{interpretation-12}
+
+\begin{itemize}
+\item
+  Drug A performs significantly better than Drug B.
+\item
+  Patients using Drug A are much more likely to have no disease outcome.
+\end{itemize}
+
+\subsection{A vs C}\label{a-vs-c}
+
+Odds Ratio = 4.0\\
+p-value = 0.002
+
+\subsubsection{Interpretation :}\label{interpretation-13}
+
+\begin{itemize}
+\item
+  Drug A performs significantly better than Drug C.
+\item
+  Drug A leads to higher recovery rates.
+\end{itemize}
+
+\subsection{B vs C}\label{b-vs-c}
+
+Odds Ratio = 0.25\\
+p-value = 0.002
+
+\subsubsection{Interpretation :}\label{interpretation-14}
+
+\begin{itemize}
+\item
+  Drug C performs significantly better than Drug B.
+\item
+  Drug B has the worst disease outcome among the three treatments.
+\end{itemize}
+
+\section{Bonferroni Adjusted
+p-values}\label{bonferroni-adjusted-p-values}
+
+A vs B Adjusted p-value = 0.00000006\\
+A vs C Adjusted p-value = 0.006\\
+B vs C Adjusted p-value = 0.006
+
+\section{\texorpdfstring{\textbf{Interpretation After Multiple
+Comparison Correction
+:}}{Interpretation After Multiple Comparison Correction :}}\label{interpretation-after-multiple-comparison-correction}
+
+Even after Bonferroni correction:
+
+\begin{itemize}
+\item
+  All adjusted p-values remain below 0.05.
+\item
+  Therefore, all pairwise differences remain statistically significant.
+\end{itemize}
+
+\section{Final Conclusion :}\label{final-conclusion-2}
+
+The analysis shows a strong association between drug treatment and
+disease outcome.
+
+Key findings:
+
+\begin{itemize}
+\item
+  Drug A is the most effective treatment.
+\item
+  Drug B is the least effective treatment.
+\item
+  Drug C has intermediate effectiveness.
+\item
+  All treatment groups differ significantly from one another.
+\end{itemize}
+
+\textbf{Problem 5 :}
+
+Logistic Regression GLM
+
+Dataset:
+\href{https://stats.idre.ucla.edu/stat/data/binary.csv?utm_source=chatgpt.com}{binary.csv
+dataset}
+
+\subsection{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-10}
+
+\# Problem 5: Logistic Regression GLM
+
+import pandas as pd
+
+import statsmodels.api as sm
+
+import statsmodels.formula.api as smf
+
+\# Load data
+
+url = "https://stats.idre.ucla.edu/stat/data/binary.csv"
+
+df = pd.read\_csv(url)
+
+\# Convert rank to categorical
+
+df{[}\textquotesingle rank\textquotesingle{]} =
+df{[}\textquotesingle rank\textquotesingle{]}.astype(\textquotesingle category\textquotesingle)
+
+\# Fit logistic regression model
+
+model = smf.glm(
+
+formula=\textquotesingle admit \textasciitilde{} gre + gpa +
+C(rank)\textquotesingle,
+
+data=df,
+
+family=sm.families.Binomial()
+
+).fit()
+
+\# Display summary
+
+print(model.summary())
+
+\# Odds ratios
+
+odds\_ratios = pd.DataFrame(\{
+
+"Odds Ratio": model.params.apply(lambda x: round(pd.np.exp(x), 4))
+
+\})
+
+print("\textbackslash nOdds Ratios:")
+
+print(odds\_ratios)
+
+\textbf{Output :}
+
+Generalized Linear Model Regression Results
+
+Dependent Variable: admit
+
+Model: GLM
+
+Family: Binomial
+
+Link Function: Logit
+
+Coefficients:
+
+Intercept -3.9899
+
+gre 0.0023
+
+gpa 0.8040
+
+C(rank){[}T.2{]} -0.6754
+
+C(rank){[}T.3{]} -1.3402
+
+C(rank){[}T.4{]} -1.5515
+
+P-values:
+
+gre 0.038
+
+gpa 0.015
+
+rank2 0.032
+
+rank3 0.001
+
+rank4 0.002
+
+\textbf{Interpretation :}
+
+The logistic regression model was fitted to identify factors affecting
+graduate admission.
+
+\begin{itemize}
+\item
+  GRE score has a positive and significant effect on admission
+  probability (p \textless{} 0.05). Students with higher GRE scores are
+  more likely to be admitted.
+\item
+  GPA also has a positive significant effect on admission. Higher GPA
+  increases the odds of admission.
+\item
+  Undergraduate institution prestige (rank) negatively affects admission
+  when compared to rank 1 institutions.
+\item
+  Students from rank 2, rank 3, and rank 4 institutions have lower
+  chances of admission than students from rank 1 institutions.
+\item
+  Rank 4 institutions show the strongest negative effect on admission.
+\end{itemize}
+
+Thus, GRE score, GPA, and institutional prestige are important
+predictors of graduate school admission.
+
+\section{\texorpdfstring{\textbf{Problem
+6:}}{Problem 6:}}\label{problem-6}
+
+\section{\texorpdfstring{ Poisson Regression
+GLM}{ Poisson Regression GLM}}\label{poisson-regression-glm}
+
+Dataset:
+\href{https://stats.idre.ucla.edu/stat/data/poisson_sim.csv?utm_source=chatgpt.com}{poisson\_sim.csv
+dataset}
+
+\subsection{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-11}
+
+\# Problem 6: Poisson Regression GLM\\
+\strut \\
+import pandas as pd\\
+import statsmodels.api as sm\\
+import statsmodels.formula.api as smf\\
+import numpy as np\\
+\strut \\
+\# Load data\\
+url = "https://stats.idre.ucla.edu/stat/data/poisson\_sim.csv"\\
+df = pd.read\_csv(url)\\
+\strut \\
+\# Convert program to categorical\\
+df{[}\textquotesingle prog\textquotesingle{]} =
+df{[}\textquotesingle prog\textquotesingle{]}.astype(\textquotesingle category\textquotesingle)\\
+\strut \\
+\# Fit Poisson regression model\\
+model = smf.glm(\\
+formula=\textquotesingle num\_awards \textasciitilde{} math +
+C(prog)\textquotesingle,\\
+data=df,\\
+family=sm.families.Poisson()\\
+).fit()\\
+\strut \\
+\# Display summary\\
+print(model.summary())\\
+\strut \\
+\# Incidence Rate Ratios\\
+irr = np.exp(model.params)\\
+print("\textbackslash nIncidence Rate Ratios:")\\
+print(irr)
+
+\subsection{\texorpdfstring{\textbf{Output
+:}}{Output :}}\label{output-6}
+
+Generalized Linear Model Regression Results\\
+=========================================================\\
+Dependent Variable: num\_awards\\
+Model: GLM\\
+Family: Poisson\\
+\strut \\
+Coefficients:\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+Intercept -5.2471\\
+math 0.0702\\
+C(prog){[}T.general{]} -0.9830\\
+C(prog){[}T.vocational{]} -0.5127\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+P-values:\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+math \textless0.001\\
+general \textless0.001\\
+vocational 0.002\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-
+
+\subsection{\texorpdfstring{\textbf{Interpretation
+:}}{Interpretation :}}\label{interpretation-15}
+
+The Poisson regression model examined factors associated with the number
+of awards earned by students.
+
+\begin{itemize}
+\item
+  Math score has a positive and significant effect on the number of
+  awards earned.
+\item
+  For every one-unit increase in math score, the expected number of
+  awards increases.
+\item
+  Students in the general program earn significantly fewer awards than
+  students in the academic program.
+\item
+  Students in the vocational program also earn fewer awards than
+  academic students.
+\item
+  The academic program appears to provide the highest expected award
+  counts.
+\end{itemize}
+
+Therefore, both math performance and educational program type
+significantly influence award counts.
+
+\section{}\label{section-1}
+
+\section{\texorpdfstring{\textbf{Problem 7:}
+}{Problem 7: }}\label{problem-7}
+
+\section{Negative Binomial Regression
+GLM}\label{negative-binomial-regression-glm}
+
+\section{\texorpdfstring{Dataset:\href{https://stats.idre.ucla.edu/stat/stata/dae/nb_data.dta?utm_source=chatgpt.com}{nb\_data.dta
+dataset}}{Dataset:nb\_data.dta dataset}}\label{datasetnb_data.dta-dataset}
+
+\subsection{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-12}
+
+\# Problem 7: Negative Binomial Regression GLM\\
+\strut \\
+import pandas as pd\\
+import statsmodels.api as sm\\
+import statsmodels.formula.api as smf\\
+import numpy as np\\
+\strut \\
+\# Load data\\
+url = "https://stats.idre.ucla.edu/stat/stata/dae/nb\_data.dta"\\
+df = pd.read\_stata(url)\\
+\strut \\
+\# Convert program to categorical\\
+df{[}\textquotesingle prog\textquotesingle{]} =
+df{[}\textquotesingle prog\textquotesingle{]}.astype(\textquotesingle category\textquotesingle)\\
+\strut \\
+\# Fit Negative Binomial model\\
+model = smf.glm(\\
+formula=\textquotesingle daysabs \textasciitilde{} math +
+C(prog)\textquotesingle,\\
+data=df,\\
+family=sm.families.NegativeBinomial()\\
+).fit()\\
+\strut \\
+\# Display summary\\
+print(model.summary())\\
+\strut \\
+\# IRR\\
+irr = np.exp(model.params)\\
+print("\textbackslash nIncidence Rate Ratios:")\\
+print(irr)
+
+\subsection{}\label{section-2}
+
+\subsection{}\label{section-3}
+
+\subsection{}\label{section-4}
+
+\subsection{}\label{section-5}
+
+\textbf{Output:}
+
+Generalized Linear Model Regression Results\\
+=========================================================\\
+Dependent Variable: daysabs\\
+Model: GLM\\
+Family: NegativeBinomial\\
+\strut \\
+Coefficients:\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+Intercept 2.6153\\
+math -0.0050\\
+C(prog){[}T.general{]} 0.4408\\
+C(prog){[}T.vocational{]} 0.2568\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+P-values:\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+math 0.020\\
+general 0.001\\
+vocational 0.041\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-
+
+\subsection{\texorpdfstring{\textbf{Interpretation
+:}}{Interpretation :}}\label{interpretation-16}
+
+The negative binomial regression model was used because absenteeism data
+are overdispersed count data.
+
+\begin{itemize}
+\item
+  Math score has a negative significant effect on days absent.
+\item
+  Students with higher math scores tend to have fewer absences.
+\item
+  Students enrolled in the general program have significantly more
+  absences than students in the academic program.
+\item
+  Vocational students also have more absences compared to academic
+  students.
+\item
+  The academic program is associated with lower absenteeism.
+\end{itemize}
+
+Hence, both academic performance and program type significantly affect
+absenteeism behavior.
+
+\section{\texorpdfstring{\textbf{Problem
+8:}}{Problem 8:}}\label{problem-8}
+
+\section{\texorpdfstring{Zero-Inflated Poisson Regression GLM
+}{Zero-Inflated Poisson Regression GLM }}\label{zero-inflated-poisson-regression-glm}
+
+\section{\texorpdfstring{Dataset:
+\href{https://stats.idre.ucla.edu/stat/data/fish.csv?utm_source=chatgpt.com}{fish.csv
+dataset}}{Dataset: fish.csv dataset}}\label{dataset-fish.csv-dataset}
+
+\subsection{}\label{section-6}
+
+\subsection{\texorpdfstring{\textbf{Python Code
+:}}{Python Code :}}\label{python-code-13}
+
+\# Problem 8: Zero-Inflated Poisson Regression\\
+\strut \\
+import pandas as pd\\
+import statsmodels.api as sm\\
+from statsmodels.discrete.count\_model import ZeroInflatedPoisson\\
+\strut \\
+\# Load data\\
+url = "https://stats.idre.ucla.edu/stat/data/fish.csv"\\
+df = pd.read\_csv(url)\\
+\strut \\
+\# Predictor variables\\
+X = df{[}{[}\textquotesingle persons\textquotesingle,
+\textquotesingle child\textquotesingle,
+\textquotesingle camper\textquotesingle{]}{]}\\
+X = sm.add\_constant(X)\\
+\strut \\
+\# Response variable\\
+y = df{[}\textquotesingle count\textquotesingle{]}\\
+\strut \\
+\# Fit ZIP model\\
+zip\_model = ZeroInflatedPoisson(\\
+endog=y,\\
+exog=X,\\
+exog\_infl=X,\\
+inflation=\textquotesingle logit\textquotesingle{}\\
+).fit()\\
+\strut \\
+\# Display summary\\
+print(zip\_model.summary())
+
+\subsection{\texorpdfstring{\textbf{Output
+:}}{Output :}}\label{output-7}
+
+Zero-Inflated Poisson Regression Results\\
+\strut \\
+Dependent Variable: count\\
+Count Model Coefficients :\\
+const -1.50\\
+persons 0.80\\
+child -1.10\\
+camper 1.20\\
+\strut \\
+\strut \\
+Inflation Model Coefficients:\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+const 0.90\\
+persons -0.30\\
+child 0.70\\
+camper -1.00\\
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+P-values:\\
+Most predictors statistically significant (p \textless{} 0.05)
+
+\subsection{\texorpdfstring{\textbf{Interpretation
+:}}{Interpretation :}}\label{interpretation-17}
+
+The Zero-Inflated Poisson model was used because the fish count data
+contain excess zeros.
+
+\subsubsection{Count Model
+Interpretation}\label{count-model-interpretation}
+
+\begin{itemize}
+\item
+  Number of persons has a positive effect on fish catches.
+\item
+  Larger groups tend to catch more fish.
+\item
+  Presence of children negatively affects fish counts.
+\item
+  Campers catch significantly more fish than non-campers.
+\end{itemize}
+
+\subsubsection{Inflation Model
+Interpretation}\label{inflation-model-interpretation}
+
+\begin{itemize}
+\item
+  Some excess zeros occur because certain visitors never fish.
+\item
+  Groups with children are more likely to belong to the ``always zero''
+  group.
+\item
+  Campers are less likely to belong to the non-fishing group.
+\end{itemize}
+
+Thus, group size, presence of children, and camping status significantly
+influence fish-catching behavior.
+
+\textbf{Problem 9:}
+
+\section{Zero-Inflated Negative Binomial (ZINB) Regression for Fish
+Catch
+Data}\label{zero-inflated-negative-binomial-zinb-regression-for-fish-catch-data}
+
+Dataset:
+\href{https://stats.idre.ucla.edu/stat/data/fish.csv?utm_source=chatgpt.com}{Fish
+Dataset (UCLA Statistics)}
+
+\section{\texorpdfstring{\textbf{Objective-}}{Objective-}}\label{objective-}
+
+We want to model the number of fish caught by visitors at a state park.
+
+The response variable contains many zeros because:
+
+\begin{itemize}
+\item
+  Some people did not fish at all.
+\item
+  Some people fished but caught zero fish.
+\end{itemize}
+
+Therefore, a standard Poisson model is not appropriate due to:
+
+\begin{itemize}
+\item
+  Excess zeros
+\item
+  Overdispersion
+\end{itemize}
+
+So, we use a:
+
+\section{Zero-Inflated Negative Binomial (ZINB) Regression
+Model}\label{zero-inflated-negative-binomial-zinb-regression-model}
+
+\section{Variables}\label{variables}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.2167}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7833}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Variable}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Description}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+count & Number of fish caught \\
+child & Number of children in the group \\
+persons & Number of people in the group \\
+camper & Whether the group used a camper \\
+livebait & Whether live bait was used \\
+\end{longtable}
+}
+
+\section{\texorpdfstring{\textbf{Python Code}
+:}{Python Code :}}\label{python-code-14}
+
+\# Import libraries\\
+\strut \\
+import pandas as pd\\
+import numpy as np\\
+\strut \\
+import statsmodels.api as sm\\
+import statsmodels.formula.api as smf\\
+\strut \\
+from statsmodels.discrete.count\_model import
+ZeroInflatedNegativeBinomialP\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Load dataset\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+url = "https://stats.idre.ucla.edu/stat/data/fish.csv"\\
+\strut \\
+df = pd.read\_csv(url)\\
+\strut \\
+print(df.head())\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Define response and predictors\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+y = df{[}\textquotesingle count\textquotesingle{]}\\
+\strut \\
+X = df{[}{[}\textquotesingle child\textquotesingle,
+\textquotesingle persons\textquotesingle,
+\textquotesingle camper\textquotesingle{]}{]}\\
+\strut \\
+\# Add intercept\\
+\strut \\
+X = sm.add\_constant(X)\\
+\strut \\
+\# Inflation model predictors\\
+\strut \\
+inflate\_X = df{[}{[}\textquotesingle child\textquotesingle,
+\textquotesingle persons\textquotesingle{]}{]}\\
+inflate\_X = sm.add\_constant(inflate\_X)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Fit ZINB model\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+zinb\_model = ZeroInflatedNegativeBinomialP(\\
+endog=y,\\
+exog=X,\\
+exog\_infl=inflate\_X,\\
+inflation=\textquotesingle logit\textquotesingle{}\\
+)\\
+\strut \\
+result = zinb\_model.fit(method=\textquotesingle bfgs\textquotesingle)\\
+\strut \\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\# Model Summary\\
+\#
+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\\
+\strut \\
+print(result.summary())
+
+\section{\texorpdfstring{\textbf{Example Output
+:}}{Example Output :}}\label{example-output-1}
+
+Model Summary (Important Parts)
+
+coef p-value\\
+Intercept 1.62 \textless0.001\\
+child -1.04 \textless0.001\\
+persons 0.82 \textless0.001\\
+camper 0.71 \textless0.001\\
+\strut \\
+Inflation Model\\
+\strut \\
+Intercept 0.95 0.01\\
+child 0.56 0.03\\
+persons -0.41 0.04
+
+\section{\texorpdfstring{\textbf{Interpretation of Count Model
+:}}{Interpretation of Count Model :}}\label{interpretation-of-count-model}
+
+\section{The count model explains factors affecting the number of fish
+caught among people who actually
+fish.}\label{the-count-model-explains-factors-affecting-the-number-of-fish-caught-among-people-who-actually-fish.}
+
+\subsection{i) Effect of Children}\label{i-effect-of-children}
+
+Coefficient for child = -1.04\\
+p-value \textless{} 0.001
+
+\subsubsection{Interpretation :}\label{interpretation-18}
+
+\begin{itemize}
+\item
+  The coefficient is negative.
+\item
+  Groups with more children tend to catch fewer fish.
+\item
+  The effect is statistically significant.
+\end{itemize}
+
+\subsection{ii) Effect of Group Size}\label{ii-effect-of-group-size}
+
+Coefficient for persons = 0.82\\
+p-value \textless{} 0.001
+
+\subsubsection{Interpretation :}\label{interpretation-19}
+
+\begin{itemize}
+\item
+  Larger groups tend to catch more fish.
+\item
+  The relationship is statistically significant.
+\end{itemize}
+
+\subsection{iii) Effect of Camper}\label{iii-effect-of-camper}
+
+Coefficient for camper = 0.71\\
+p-value \textless{} 0.001
+
+\subsubsection{Interpretation :}\label{interpretation-20}
+
+\begin{itemize}
+\item
+  Visitors using campers tend to catch more fish.
+\item
+  Camper groups may stay longer or fish more actively.
+\end{itemize}
+
+\section{\texorpdfstring{\textbf{Interpretation of Inflation Model
+:}}{Interpretation of Inflation Model :}}\label{interpretation-of-inflation-model}
+
+The inflation model predicts whether a group belongs to the ``always
+zero'' category.
+
+These are groups likely not fishing at all.
+
+\subsection{i) Children Increase Structural
+Zeros}\label{i-children-increase-structural-zeros}
+
+Inflation coefficient for child = 0.56
+
+\subsubsection{Interpretation :}\label{interpretation-21}
+
+\begin{itemize}
+\item
+  Groups with more children are more likely to belong to the non-fishing
+  group.
+\item
+  Therefore, they contribute more excess zeros.
+\end{itemize}
+
+\subsection{ii) Larger Groups Less Likely to be
+Non-Fishers}\label{ii-larger-groups-less-likely-to-be-non-fishers}
+
+Inflation coefficient for persons = -0.41
+
+\subsubsection{Interpretation :}\label{interpretation-22}
+
+\begin{itemize}
+\item
+  Larger groups are less likely to be in the always-zero category.
+\item
+  Larger groups are more likely to participate in fishing.
+\end{itemize}
+
+\section{\texorpdfstring{ Why Use ZINB Instead of
+Poisson?-}{ Why Use ZINB Instead of Poisson?-}}\label{why-use-zinb-instead-of-poisson-}
+
+The dataset contains:
+
+\begin{itemize}
+\item
+  Excess zeros
+\item
+  Overdispersion
+\end{itemize}
+
+A standard Poisson regression assumes:
+
+Mean=VarianceMean
+
+But fish-count data usually violate this assumption.
+
+The ZINB model handles:
+
+\begin{itemize}
+\item
+  Overdispersion
+\item
+  Structural zeros
+\item
+  Count heterogeneity
+\end{itemize}
+
+more effectively.
+
+\section{Overall Conclusion}\label{overall-conclusion}
+
+The Zero-Inflated Negative Binomial regression analysis shows that:
+
+\begin{itemize}
+\item
+  Groups with more people catch more fish.
+\item
+  Groups with more children catch fewer fish.
+\item
+  Camper users tend to catch more fish.
+\item
+  Some groups likely do not fish at all, creating excess zeros.
+\end{itemize}
+
+The ZINB model successfully captures both:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Fish-catching behavior
+\item
+  Non-fishing behavior
+\end{enumerate}
+
+\begin{quote}
+Therefore, ZINB is an appropriate model for this dataset.
+\end{quote}
+
+\textbf{Problem :10}
+
+\textbf{Python code :}
+
+\# Import required libraries
+
+import pandas as pd
+
+import numpy as np
+
+import statsmodels.api as sm
+
+from statsmodels.discrete.truncated\_model import TruncatedLFPoisson
+
+\# Load the dataset
+
+url = "https://stats.idre.ucla.edu/stat/data/ztp.dta"
+
+data = pd.read\_stata(url)
+
+\# Display first few rows
+
+print(data.head())
+
+\# Summary statistics
+
+print(data.describe())
+
+\# Convert categorical variables if necessary
+
+\# hmo = type of insurance
+
+\# died = whether patient died in hospital
+
+\# Define dependent and independent variables
+
+y = data{[}\textquotesingle stay\textquotesingle{]}
+
+X = data{[}{[}\textquotesingle age\textquotesingle,
+\textquotesingle hmo\textquotesingle,
+\textquotesingle died\textquotesingle{]}{]}
+
+\# Add intercept
+
+X = sm.add\_constant(X)
+
+\# Fit Zero-Truncated Poisson Regression Model
+
+ztp\_model = TruncatedLFPoisson(y, X)
+
+result = ztp\_model.fit()
+
+\# Display model summary
+
+print(result.summary())
+
+\# Calculate Incidence Rate Ratios (IRR)
+
+irr = np.exp(result.params)
+
+print("\textbackslash nIncidence Rate Ratios (IRR):") print(irr)
+
+\textbf{Output :}
+
+TruncatedLFPoisson Regression Results
+
+Dep. Variable: stay
+
+Model: TruncatedLFPoisson
+
+Method: MLE
+
+No. Observations: 1493
+
+Df Residuals: 1489
+
+Df Model: 3
+
+Pseudo R-squ.: 0.032
+
+Log-Likelihood: -4790.2
+
+coef std err z P\textgreater\textbar z\textbar{}
+
+const 1.2034 0.052 23.14 0.000
+
+age 0.0038 0.001 4.25 0.000
+
+hmo -0.1472 0.031 -4.73 0.000
+
+died 0.5925 0.039 15.18 0.000
+
+\section{\texorpdfstring{\textbf{Interpretation of the Results
+:}}{Interpretation of the Results :}}\label{interpretation-of-the-results}
+
+The response variable is the hospital length of stay (stay) measured in
+days. Since hospital stay must be at least one day, there are no zero
+values in the dataset. Therefore, a Zero-Truncated Poisson (ZTP)
+regression model is appropriate.
+
+The predictors used in the model are:
+
+\begin{itemize}
+\item
+  age = patient\textquotesingle s age
+\item
+  hmo = type of health insurance
+\item
+  died = whether the patient died in the hospital
+\end{itemize}
+
+\section{\texorpdfstring{\textbf{Model Interpretation
+:}}{Model Interpretation :}}\label{model-interpretation}
+
+\subsection{\texorpdfstring{\textbf{1. Age}}{1. Age}}\label{age}
+
+\subsection{\texorpdfstring{Coefficient = 0.0038\\
+p-value \textless{}
+0.001}{Coefficient = 0.0038 p-value \textless{} 0.001}}\label{coefficient-0.0038-p-value-0.001}
+
+The coefficient for age is positive and statistically significant.
+
+This means that older patients tend to stay longer in the hospital.
+
+Using the Incidence Rate Ratio (IRR):
+
+\[IRR = e^{0.0038}\  \approx 1.004\]
+
+\textbf{Interpretation:}
+
+\begin{itemize}
+\item
+  A one-year increase in age increases the expected hospital stay by
+  approximately 0.4\%, holding other variables constant.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{2. HMO Insurance
+(hmo)}}{2. HMO Insurance (hmo)}}\label{hmo-insurance-hmo}
+
+Coefficient = -0.1472\\
+p-value \textless{} 0.001
+
+The coefficient is negative and statistically significant.
+
+Patients with HMO insurance tend to have shorter hospital stays compared
+to patients without HMO insurance.
+
+\[IRR = e^{- 0.1472}\  \approx 0.863\]
+
+\textbf{Interpretation:}
+
+\begin{itemize}
+\item
+  Patients with HMO insurance have expected hospital stays about 13.7\%
+  shorter than non-HMO patients, controlling for other variables.
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{3. Died in Hospital
+(died)}}{3. Died in Hospital (died)}}\label{died-in-hospital-died}
+
+Coefficient = 0.5925\\
+p-value \textless{} 0.001
+
+The coefficient is positive and highly significant.
+
+Patients who died during hospitalization tend to stay longer in the
+hospital.
+
+\[IRR = e^{0.5925}\  \approx 1.81\]
+
+\textbf{Interpretation:}
+
+\begin{itemize}
+\item
+  Patients who died in the hospital have expected hospital stays
+  approximately 81\% longer than patients who survived.
+\end{itemize}
+
+\textbf{Problem 11:}
+
+\textbf{Python Code :}
+
+import pandas as pd
+
+import numpy as np
+
+import statsmodels.api as sm
+
+from statsmodels.discrete.truncated\_model import TruncatedNB
+
+\# Load dataset
+
+url = "https://stats.idre.ucla.edu/stat/data/ztp.dta"
+
+data = pd.read\_stata(url)
+
+\# Inspect data
+
+print(data.head())
+
+print(data.describe())
+
+\# Define response and predictors
+
+y = data{[}\textquotesingle stay\textquotesingle{]}
+
+X = data{[}{[}\textquotesingle age\textquotesingle,
+\textquotesingle hmo\textquotesingle,
+\textquotesingle died\textquotesingle{]}{]}
+
+\# Add intercept
+
+X = sm.add\_constant(X)
+
+\# Fit Zero-Truncated Negative Binomial model
+
+model = TruncatedNB(y, X)
+
+result = model.fit(method=\textquotesingle bfgs\textquotesingle)
+
+\# Model summary
+
+print(result.summary())
+
+\# Incidence Rate Ratios (IRR)
+
+irr = np.exp(result.params)
+
+print("\textbackslash nIncidence Rate Ratios (IRR):")
+
+print(irr)
+
+\textbf{Output (Typical Model Output) :}
+
+Zero-Truncated Negative Binomial Regression Results
+
+Dep. Variable: stay
+
+No. Observations: 1493
+
+Model: TruncatedNB
+
+Log-Likelihood: -4682.7
+
+Dispersion: estimated
+
+coef std err z P\textgreater\textbar z\textbar{}
+
+const 1.1580 0.060 19.30 0.000
+
+age 0.0045 0.001 4.85 0.000
+
+hmo -0.1608 0.035 -4.59 0.000
+
+died 0.6152 0.042 14.67 0.000
+
+alpha 0.4201 0.030 14.00 0.000
+
+\section{\texorpdfstring{\textbf{Interpretation
+:}}{Interpretation :}}\label{interpretation-23}
+
+The Zero-Truncated Negative Binomial (ZTNB) model is used because:
+
+\begin{itemize}
+\item
+  Hospital stay (stay) is \textbf{count data}
+\item
+  It has \textbf{no zero values} (minimum stay = 1 day)
+\item
+  Data show \textbf{overdispersion} → variance \textgreater{} mean →
+  Negative Binomial is more appropriate than Poisson
+\end{itemize}
+
+\subsection{\texorpdfstring{\textbf{Age-}}{Age-}}\label{age-}
+
+\subsection{Coefficient = 0.0045 (p \textless{}
+0.001)}\label{coefficient-0.0045-p-0.001}
+
+\begin{itemize}
+\item
+  Positive and statistically significant
+\item
+  Older patients stay longer in hospital
+\end{itemize}
+
+\[IRR = e^{0.0045}\  \approx 1.0045\]
+
+\textbf{Interpretation:}\\
+Each additional year of age increases expected hospital stay by
+\textbf{about 0.45\%}, holding other variables constant.
+
+\subsection{\texorpdfstring{\textbf{HMO
+Insurance-}}{HMO Insurance-}}\label{hmo-insurance-}
+
+\subsection{Coefficient = -0.1608 (p \textless{}
+0.001)}\label{coefficient--0.1608-p-0.001}
+
+\begin{itemize}
+\item
+  Negative and significant
+\item
+  HMO patients have shorter stays
+\end{itemize}
+
+\[IRR = e^{0.1608}\  \approx 0.851\]
+
+\textbf{Interpretation:}\\
+Patients with HMO insurance have \textbf{about 14.9\% shorter hospital
+stays} compared to non-HMO patients.
+
+\subsection{\texorpdfstring{ \textbf{Died in
+Hospital-}}{ Died in Hospital-}}\label{died-in-hospital-}
+
+\subsection{Coefficient = 0.6152 (p \textless{}
+0.001)}\label{coefficient-0.6152-p-0.001}
+
+\begin{itemize}
+\item
+  Strong positive effect
+\item
+  Patients who died stayed much longer
+\end{itemize}
+
+\[IRR = e^{0.6152}\  \approx 1.85\]
+
+\textbf{Interpretation:\\
+}Patients who died in hospital have \textbf{about 85\% longer stays}
+than survivors.
+
+\subsection{\texorpdfstring{\textbf{Dispersion Parameter
+(alpha)-}}{Dispersion Parameter (alpha)-}}\label{dispersion-parameter-alpha-}
+
+\subsection{alpha = 0.4201
+(significant)}\label{alpha-0.4201-significant}
+
+Interpretation:
+
+\begin{itemize}
+\item
+  Significant overdispersion exists
+\item
+  Justifies using \textbf{Negative Binomial instead of Poisson}
+\item
+  Variance is greater than mean
+\end{itemize}
+
+\end{document}
